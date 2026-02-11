@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空調設計・計算 Webアプリ集</title>
+    <meta name="description" content="空調設計、照度計算、ダクト計算などに使える便利なWebアプリ集です。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0066cc; /* 爽やかな青 */
+            --bg-color: #f0f5fa;      /* 薄い青白 */
+            --card-bg: #ffffff;       /* 白 */
+            --text-main: #333333;     /* メインテキスト（濃いグレー） */
+            --text-sub: #666666;      /* サブテキスト（グレー） */
+            --border-color: #dae1e7;  /* ボーダー */
+            --tag-lang-bg: rgba(0, 102, 204, 0.1);
+            --tag-lang-text: #0066cc;
+            --tag-device-bg: rgba(100, 116, 139, 0.1);
+            --tag-device-text: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            background-image: url('img/background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        p.subtitle {
+            color: var(--text-sub);
+            margin-bottom: 30px;
+        }
+
+        /* 検索ボックス */
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            outline: none;
+            transition: border-color 0.3s;
+            background-color: var(--card-bg);
+            color: var(--text-main);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 102, 204, 0.2);
+        }
+
+        /* グリッドレイアウト */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* カードスタイル */
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .app-thumbnail {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            object-fit: cover;
+            background-color: #e2e8f0;
+            min-height: 200px;
+        }
+
+        .app-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-desc {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* タグスタイル */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.8rem;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 500;
+            font-family: monospace; /* エンジニアっぽさを出す */
+        }
+
+        .tag.lang {
+            background-color: var(--tag-lang-bg);
+            color: var(--tag-lang-text);
+        }
+
+        .tag.device {
+            background-color: var(--tag-device-bg);
+            color: var(--tag-device-text);
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+        }
+
+        /* 検索結果なしの表示 */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .app-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>空調設計・計算 Webアプリ集</h1>
+        <p class="subtitle">エンジニアリング業務を効率化する計算ツール＆ユーティリティ</p>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="アプリを検索 (例: 圧力, ダクト, 英語...)">
+        </div>
+    </header>
+
+    <main class="app-grid" id="appGrid">
+        <!-- アプリ一覧 -->
+        
+        <a href="https://ash-calculation.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <img src="img/kuukisenzu.jpg" alt="ドラッグして空気線図 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">ドラッグして空気線図 <span>↗</span></div>
+            <p class="app-desc">空気線図上のラインをドラッグして空調器内蔵機器の計算を実施できます。</p>
+            <div class="tags">
+                <span class="tag lang">日本語･英語</span>
+                <span class="tag device">PC</span>
+            </div>
+        </a>
+
+        <a href="https://lux-cal.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <div class="app-title">照度計算 <span>↗</span></div>
+            <p class="app-desc">工場のラインなどの作業場の照度を点照度計算法で算出します。</p>
+            <div class="tags">
+                <span class="tag lang">日本語･英語</span>
+                <span class="tag device">PC</span>
+            </div>
+        </a>
+
+        <a href="https://pump-head-cal.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <div class="app-title">ポンプ揚程計算 <span>↗</span></div>
+            <p class="app-desc">ポンプの揚程、NPSHaの計算が可能です。</p>
+            <div class="tags">
+                <span class="tag lang">日本語</span>
+                <span class="tag device">PC</span>
+            </div>
+        </a>
+
+        <a href="https://duct-pressure-loss.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <div class="app-title">ダクト圧力損失計算 <span>↗</span></div>
+            <p class="app-desc">ダクト圧力損失およびファン静圧を計算します。</p>
+            <div class="tags">
+                <span class="tag lang">日本語･英語</span>
+                <span class="tag device">PC</span>
+            </div>
+        </a>
+
+        <a href="https://unit-matrix.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <div class="app-title">単位換算マトリックス <span>↗</span></div>
+            <p class="app-desc">長さ・重量・圧力など、多数の単位を表形式で一覧表示します。</p>
+            <div class="tags">
+                <span class="tag lang">日本語</span>
+                <span class="tag device">PC･スマホ</span>
+            </div>
+        </a>
+
+        <a href="https://schedule-with-drag-and-drop.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <div class="app-title">ドラッグして工程表 <span>↗</span></div>
+            <p class="app-desc">工程表上をドラッグして直感的にスケジュールを作成できます。</p>
+            <div class="tags">
+                <span class="tag lang">日本語･英語</span>
+                <span class="tag device">PC</span>
+            </div>
+        </a>
+
+        <a href="https://ft-in-and-m-calculator-cyan.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <div class="app-title">ft-in & m 計算機 <span>↗</span></div>
+            <p class="app-desc">フィートインチとメートルを混合して計算できる電卓です。</p>
+            <div class="tags">
+                <span class="tag lang">英語</span>
+                <span class="tag device">PC･スマホ</span>
+            </div>
+        </a>
+
+        <a href="https://psychro-calc.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <div class="app-title">空気状態計算 <span>↗</span></div>
+            <p class="app-desc">空気の物性を2つ入力すると他の物性を自動計算します。</p>
+            <div class="tags">
+                <span class="tag lang">日本語･英語</span>
+                <span class="tag device">PC･スマホ</span>
+            </div>
+        </a>
+
+        <a href="https://air-mixing-calculator.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <div class="app-title">混合空気計算 <span>↗</span></div>
+            <p class="app-desc">2種類以上の空気を混合したときの物性を計算します。</p>
+            <div class="tags">
+                <span class="tag lang">日本語･英語</span>
+                <span class="tag device">PC･スマホ</span>
+            </div>
+        </a>
+
+        <div class="no-results" id="noResults">
+            一致するアプリが見つかりませんでした。
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; HVAC Design Tools</p>
+    </footer>
+
+    <script>
+        // 簡易検索機能
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.app-card');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>
