@@ -138,6 +138,20 @@
             flex-grow: 1;
         }
 
+        /* カテゴリーセクション */
+        .category-section {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
         /* タグスタイル */
         .tags {
             display: flex;
@@ -173,7 +187,6 @@
 
         /* 検索結果なしの表示 */
         .no-results {
-            grid-column: 1 / -1;
             text-align: center;
             padding: 40px;
             color: var(--text-sub);
@@ -196,9 +209,10 @@
         </div>
     </header>
 
-    <main class="app-grid" id="appGrid">
-        <!-- アプリ一覧 -->
-        
+    <main>
+        <section class="category-section">
+        <h2 class="category-title">エンジニアリング</h2>
+        <div class="app-grid">
         <a href="https://ash-calculation.vercel.app/" class="app-card" target="_blank" rel="noopener">
             <img src="img/kuukisenzu.jpg" alt="ドラッグして空気線図 アプリのスクリーンショット" class="app-thumbnail">
             <div class="app-title">ドラッグして空気線図 <span>↗</span></div>
@@ -239,16 +253,6 @@
             </div>
         </a>
 
-        <a href="https://unit-matrix.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <img src="img/unitmatrix.jpg" alt="単位換算マトリックス アプリのスクリーンショット" class="app-thumbnail">
-            <div class="app-title">単位換算マトリックス <span>↗</span></div>
-            <p class="app-desc">長さ・重量・圧力など、多数の単位を表形式で一覧表示します。</p>
-            <div class="tags">
-                <span class="tag lang">日本語</span>
-                <span class="tag device">PC･スマホ</span>
-            </div>
-        </a>
-
         <a href="https://schedule-with-drag-and-drop.vercel.app/" class="app-card" target="_blank" rel="noopener">
             <img src="img/schedule.jpg" alt="ドラッグして工程表 アプリのスクリーンショット" class="app-thumbnail">
             <div class="app-title">ドラッグして工程表 <span>↗</span></div>
@@ -256,6 +260,21 @@
             <div class="tags">
                 <span class="tag lang">日本語･英語</span>
                 <span class="tag device">PC</span>
+            </div>
+        </a>
+        </div>
+        </section>
+
+        <section class="category-section">
+        <h2 class="category-title">計算機･電卓</h2>
+        <div class="app-grid">
+        <a href="https://unit-matrix.vercel.app/" class="app-card" target="_blank" rel="noopener">
+            <img src="img/unitmatrix.jpg" alt="単位換算マトリックス アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">単位換算マトリックス <span>↗</span></div>
+            <p class="app-desc">長さ・重量・圧力など、多数の単位を表形式で一覧表示します。</p>
+            <div class="tags">
+                <span class="tag lang">日本語</span>
+                <span class="tag device">PC･スマホ</span>
             </div>
         </a>
 
@@ -288,6 +307,8 @@
                 <span class="tag device">PC･スマホ</span>
             </div>
         </a>
+        </div>
+        </section>
 
         <div class="no-results" id="noResults">
             一致するアプリが見つかりませんでした。
@@ -301,24 +322,30 @@
     <script>
         // 簡易検索機能
         const searchInput = document.getElementById('searchInput');
-        const cards = document.querySelectorAll('.app-card');
         const noResults = document.getElementById('noResults');
+        const sections = document.querySelectorAll('.category-section');
 
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
-            let visibleCount = 0;
+            let totalVisible = 0;
 
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(term)) {
-                    card.style.display = 'flex';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
+            sections.forEach(section => {
+                const cards = section.querySelectorAll('.app-card');
+                let sectionVisible = 0;
+                cards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    if (text.includes(term)) {
+                        card.style.display = 'flex';
+                        sectionVisible++;
+                        totalVisible++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                section.style.display = sectionVisible > 0 ? 'block' : 'none';
             });
 
-            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+            noResults.style.display = totalVisible === 0 ? 'block' : 'none';
         });
     </script>
 </body>
