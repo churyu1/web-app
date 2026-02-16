@@ -84,10 +84,10 @@
 
         /* グリッドレイアウト */
         .app-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -101,7 +101,8 @@
             text-decoration: none;
             color: inherit;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            align-items: center;
             border: 1px solid var(--border-color);
         }
 
@@ -111,30 +112,31 @@
             border-color: var(--primary-color);
         }
 
-        .app-thumbnail {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            object-fit: cover;
-            background-color: #e2e8f0;
-            min-height: 200px;
-        }
-
         .app-title {
             font-size: 1.25rem;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 0;
+            margin-right: 20px;
+            min-width: 220px;
             color: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
+        .app-title-en {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            font-weight: normal;
+            margin-top: 4px;
+            line-height: 1.2;
+        }
+
         .app-desc {
             font-size: 0.95rem;
             color: var(--text-sub);
-            margin-bottom: 20px;
+            margin-bottom: 0;
+            margin-right: 20px;
             flex-grow: 1;
         }
 
@@ -150,6 +152,16 @@
             color: var(--text-main);
             border-left: 5px solid var(--primary-color);
             padding-left: 15px;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .category-title-en {
+            font-size: 1rem;
+            color: var(--text-sub);
+            font-weight: normal;
         }
 
         /* タグスタイル */
@@ -158,6 +170,8 @@
             flex-wrap: wrap;
             gap: 8px;
             font-size: 0.8rem;
+            margin-left: auto;
+            flex-shrink: 0;
         }
 
         .tag {
@@ -206,7 +220,18 @@
 
         @media (max-width: 600px) {
             h1 { font-size: 1.5rem; }
-            .app-grid { grid-template-columns: 1fr; }
+            .app-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .app-title, .app-desc {
+                margin-right: 0;
+                margin-bottom: 10px;
+                width: 100%;
+            }
+            .tags {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
@@ -222,11 +247,13 @@
 
     <main>
         <section class="category-section">
-        <h2 class="category-title">エンジニアリング</h2>
+        <h2 class="category-title">エンジニアリング<span class="category-title-en">Engineering</span></h2>
         <div class="app-grid">
         <a href="https://ash-calculation.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">空気線図 for HVAC <span>↗</span></div>
-            <img src="img/kuukisenzu.jpg" alt="ドラッグして空気線図 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>空気線図 for HVAC<div class="app-title-en">Psychrometric Chart</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">空気線図上のプロセスラインをドラッグして空調器用機器の計算を実施</p>
             <div class="tags">
                 <span class="tag lang">日本語･英語</span>
@@ -235,8 +262,10 @@
         </a>
 
         <a href="https://lux-cal.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">照度計算 <span>↗</span></div>
-            <img src="img/shoudo.jpg" alt="照度計算 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>照度計算<div class="app-title-en">Illuminance Calculation</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">工場のラインなどの作業場の照度を点照度計算法で算出</p>
             <div class="tags">
                 <span class="tag lang">日本語･英語</span>
@@ -245,8 +274,10 @@
         </a>
 
         <a href="https://pump-head-cal.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">ポンプ揚程計算 <span>↗</span></div>
-            <img src="img/pump_640x480.jpg" alt="ポンプ揚程計算 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>ポンプ揚程計算<div class="app-title-en">Pump Head Calculation</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">ポンプの揚程、NPSHaの計算が可能</p>
             <div class="tags">
                 <span class="tag lang">日本語</span>
@@ -255,8 +286,10 @@
         </a>
 
         <a href="https://duct-pressure-loss.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">ダクト圧力損失計算 <span>↗</span></div>
-            <img src="img/duct.png" alt="ダクト圧力損失計算 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>ダクト圧力損失計算<div class="app-title-en">Duct Pressure Loss</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">ダクト圧力損失およびファン静圧を計算</p>
             <div class="tags">
                 <span class="tag lang">日本語･英語</span>
@@ -265,8 +298,10 @@
         </a>
 
         <a href="https://evaporation-rate-dusky.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">蒸発速度計算 <span>↗</span></div>
-            <img src="img/evaporation.png" alt="蒸発速度計算 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>蒸発速度計算<div class="app-title-en">Evaporation Rate</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">風速や湿度などの条件から水面からの蒸発速度を計算</p>
             <div class="tags">
                 <span class="tag lang">日本語</span>
@@ -275,8 +310,10 @@
         </a>
 
         <a href="https://schedule-with-drag-and-drop.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">ドラッグして工程表 <span>↗</span></div>
-            <img src="img/schedule.jpg" alt="ドラッグして工程表 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>ドラッグして工程表<div class="app-title-en">Drag & Drop Schedule</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">工程表上をドラッグして直感的にスケジュールを作成</p>
             <div class="tags">
                 <span class="tag lang">日本語･英語</span>
@@ -287,11 +324,13 @@
         </section>
 
         <section class="category-section">
-        <h2 class="category-title">計算機･電卓</h2>
+        <h2 class="category-title">計算機･電卓<span class="category-title-en">Calculators</span></h2>
         <div class="app-grid">
         <a href="https://ft-in-and-m-calculator-cyan.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">ft-in & m 計算機 <span>↗</span></div>
-            <img src="img/ftinm.jpg" alt="ft-in & m 計算機 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>ft-in & m 計算機<div class="app-title-en">ft-in & m Calculator</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">フィートインチとメートルを混合して計算できる電卓</p>
             <div class="tags">
                 <span class="tag lang">英語</span>
@@ -300,8 +339,10 @@
         </a>
 
         <a href="https://psychro-calc.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">空気状態計算 <span>↗</span></div>
-            <img src="img/psychrocal.jpg" alt="空気状態計算 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>空気状態計算<div class="app-title-en">Air Properties Calculator</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">任意の空気の物性を2つ入力すると他の物性を自動計算</p>
             <div class="tags">
                 <span class="tag lang">日本語･英語</span>
@@ -310,8 +351,10 @@
         </a>
 
         <a href="https://air-mixing-calculator.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">混合空気計算 <span>↗</span></div>
-            <img src="img/mixedair.jpg" alt="混合空気計算 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>混合空気計算<div class="app-title-en">Mixed Air Calculator</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">最大3種類までの空気を混合したときの物性を計算</p>
             <div class="tags">
                 <span class="tag lang">日本語･英語</span>
@@ -320,8 +363,10 @@
         </a>
 
         <a href="https://unit-matrix.vercel.app/" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">単位換算マトリックス <span>↗</span></div>
-            <img src="img/unitmatrix.jpg" alt="単位換算マトリックス アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>単位換算マトリックス<div class="app-title-en">Unit Conversion Matrix</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">長さ・重量・圧力など、多数の単位を表形式で一覧表示</p>
             <div class="tags">
                 <span class="tag lang">日本語</span>
@@ -332,11 +377,13 @@
         </section>
 
         <section class="category-section">
-        <h2 class="category-title">Chrome拡張機能</h2>
+        <h2 class="category-title">Chrome拡張機能<span class="category-title-en">Chrome Extensions</span></h2>
         <div class="app-grid">
         <a href="https://chromewebstore.google.com/detail/%E9%96%8B%E3%81%8F%E6%99%82%E3%81%AF%E5%8F%B3%E9%9A%A3-%E9%96%89%E3%81%98%E3%82%8B%E6%99%82%E3%81%AF%E3%82%A2%E3%82%AF%E3%83%86%E3%82%A3%E3%83%96%E9%A0%86/djhfllecmfoblmnmlfmdfbmibnhpimdg" class="app-card" target="_blank" rel="noopener">
-            <div class="app-title">開く時は右隣 閉じる時はアクティブ順 <span>↗</span></div>
-            <img src="img/icon.png" alt="開く時は右隣 閉じる時はアクティブ順 アプリのスクリーンショット" class="app-thumbnail">
+            <div class="app-title">
+                <div>開く時は右隣 閉じる時はアクティブ順<div class="app-title-en">Open Right, Close in Order</div></div>
+                <span>↗</span>
+            </div>
             <p class="app-desc">新しく開くタブを常に現在のタブの右隣に開き、閉じる時はアクティブ順にタブを切り替えるChrome拡張機能</p>
             <div class="tags">
                 <span class="tag lang">日本語</span>
